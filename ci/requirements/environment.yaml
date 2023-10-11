@@ -1,0 +1,30 @@
+name: slcwindinversion-tests
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  # development
+  - ipython
+  - pre-commit
+  - jupyterlab
+  - jupyterlab_code_formatter
+  - isort
+  - black
+  - dask-labextension
+  # testing
+  - pytest
+  - pytest-reportlog
+  - hypothesis
+  - coverage
+  # I/O
+  - h5netcdf
+  - scipy
+  # data
+  - xarray
+  - xarray-datatree
+  - numpy
+  # processing
+  - more-itertools
+  - tqdm
+  - lxml
+  - importlib_resources
