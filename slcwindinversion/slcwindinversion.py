@@ -36,7 +36,6 @@ def core_inversion(folder, outd, overwrite=False):
     out_folder = os.path.join(outd, os.path.basename(folder))
     out_folder = out_folder.replace('XSP', 'WPS')
     logging.info(out_folder)
-    print(out_folder)
     os.makedirs(out_folder, exist_ok=True)
     if '1SDV' in folder or '1SDH' in folder:
 
@@ -44,13 +43,12 @@ def core_inversion(folder, outd, overwrite=False):
     else:
         test_all_measu = len(glob.glob(out_folder + "/*.nc")) == 3
     if os.path.exists(folder) and test_all_measu and overwrite is False:
-        print("out_folder %s exists" % out_folder)
         logging.info("out_folder %s exists" % out_folder)
         return out_folder
 
     subswath_numbers = [1, 2, 3]  # for IW
     for subswath_number in subswath_numbers:
-        print("subswath_number %d" % subswath_number)
+        logging.info("subswath_number %d" % subswath_number)
         try:
             path_vv, path_vh = get_vv_vh(folder, subswath_number)
         except Exception as e:
@@ -81,7 +79,7 @@ def core_inversion(folder, outd, overwrite=False):
 
             dsig_cr = windspeed.get_dsig("gmf_s1_v2", vv_ds.incidence, sigma_0_vh, vh_ds.nesz)
 
-            ## co & dual inversion
+            # co & dual inversion
             wind_speed_co, wind_speed_dual = windspeed.invert_from_model(
                 vv_ds.incidence,
                 sigma_0_vv,
