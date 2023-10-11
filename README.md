@@ -3,7 +3,6 @@ slcwindinversion
 ================
 
 
-
 ![pypi](https://img.shields.io/pypi/v/slcwindinversion.svg "https://pypi.python.org/pypi/slcwindinversion")
 ![travis](https://img.shields.io/travis/agrouaze/slcwindinversion.svg "https://travis-ci.com/agrouaze/slcwindinversion")
 ![readthedocs](https://readthedocs.org/projects/slcwindinversion/badge/?version=latest "https://slcwindinversion.readthedocs.io/en/latest/?version=latest")
@@ -11,6 +10,13 @@ slcwindinversion
 
 
 Python library to generate L2A wind speed products from intermediate Sentinel-1 TOPS SLC-derived products.
+This library based on `xarray` is providing wind speed retrievals from NRCS (Normalized Radar Cross Section) coming from C-band SAR images.
+In particular the wind can be estimated from:
+ - VV channel
+ - HH channel
+ - VH channel
+ - HV channel
+ - combination of co and cross-pol channels (e.g. VV+VH)
 
 
 * Free software: MIT license
