@@ -1,0 +1,45 @@
+[project]
+name = "slcwindinversion"
+requires-python = ">= 3.9"
+description = "Python library to generate L2A wind speed products from intermediate Sentinel-1 TOPS SLC-derived products."
+readme.file = "README.md"
+readme.content-type = "text/markdown"
+#license.text = "GPL-3.0"
+license = {text = "MIT"}
+keywords = ["SAR", "windspeed", "reseach","SAR",'Sentinel-1']
+authors = [
+  {name = "Antoine Grouazel"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "scipy",
+    "xsarsea",
+    "xarray",
+    "xarray-datatree",
+    "importlib_resources",
+    'tqdm'
+]
+dynamic = ["version"]
+
+[build-system]
+requires = ["setuptools>=64.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["slcwindinversion"]
+
+[tool.setuptools_scm]
+fallback_version = "999"
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+float_to_top = true
+default_section = "THIRDPARTY"
+known_first_party = "slcwindinversion"
+
+[project.scripts]
+slcwindinversion = "slcwindinversion.cli:main"
+
