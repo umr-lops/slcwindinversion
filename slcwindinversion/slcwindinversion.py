@@ -1,4 +1,6 @@
 """Main module."""
+import pdb
+
 import numpy as np
 import xarray as xr
 import glob
@@ -25,25 +27,25 @@ def get_vv_vh(folder, subswath_number):
         return vvs[0], vhs[0]
 
 
-def core_inversion(folder, outd, overwrite=False):
+def core_inversion(folder, outd, overwrite=False,version=None):
     """
     args:
         folder: str input L1C or L1B SAFE full path containing .nc files with sigma0,incidence,ground_heading,nesz variables
         outd: str: output directory where to store the L2A WSP .nc files
         overwrite: bool
     """
-
+    folder = folder.rstrip('/')
     out_folder = os.path.join(outd, os.path.basename(folder))
     out_folder = out_folder.replace('XSP', 'WPS')
     logging.info(out_folder)
     os.makedirs(out_folder, exist_ok=True)
     if '1SDV' in folder or '1SDH' in folder:
-
-        test_all_measu = len(glob.glob(out_folder + "/*.nc")) == 6
+        # even for dual pol there is only 3 output files (co and cross pol are merged)
+        test_all_measu = len(glob.glob(os.path.join(out_folder , "*.nc"))) == 3
     else:
-        test_all_measu = len(glob.glob(out_folder + "/*.nc")) == 3
+        test_all_measu = len(glob.glob(os.path.join(out_folder , "*.nc"))) == 3
     if os.path.exists(folder) and test_all_measu and overwrite is False:
-        logging.info("out_folder %s exists" % out_folder)
+        logging.info("output folder %s already exists and expected files are present." % out_folder)
         return out_folder
 
     subswath_numbers = [1, 2, 3]  # for IW
@@ -53,7 +55,15 @@ def core_inversion(folder, outd, overwrite=False):
             path_vv, path_vh = get_vv_vh(folder, subswath_number)
         except Exception as e:
             return None
-
+        base_final = os.path.basename(path_vv).replace("-vv-", "-dualpol-")
+        found_version = base_final.split('_')[-1].replace('.nc','')
+        if version is None:
+            outputversion = found_version
+            logging.debug('output files will have same version (%s) than input Level-1C measurements',outputversion)
+        else:
+            outputversion = version
+            logging.debug("output files will have version %s (Level-1C files have version %s)",outputversion,found_version)
+        base_final = base_final.replace(found_version,outputversion)
         for burst_type in ["intra", "inter"]:
             logging.info("burst %s" % burst_type)
 
@@ -125,17 +135,20 @@ def core_inversion(folder, outd, overwrite=False):
             #             vh_ds.wind_speed_cr.attrs['model'] = "gmf_s1_v2"
             #             vh_ds.wind_speed_cr.attrs['units'] = 'm/s'
 
-            path_final = os.path.basename(path_vv).replace('-vv-', '-dualpol-')
+
             # SAVE
-            out_ds.to_netcdf(os.path.join(out_folder, path_final), group=burst_type + 'burst', mode='a')
+            logging.debug('base_final',base_final)
+            out_ds.to_netcdf(os.path.join(out_folder, base_final), group=burst_type + 'burst', mode='a')
             # vh_ds.to_netcdf(os.path.join(out_folder,os.path.basename(path_vh)),group=burst_type+'burst',mode='a')
 
             out_ds.close()
             # vh_ds.close()
+    logging.info('new netCDF are stored in : %s',out_folder)
     return out_folder
 
 
-def generate_L2A_windspeed_product(input_directory, output_directory):
-    folders = glob.glob(os.path.join(input_directory, "*SAFE"))
-    for folder in folders:
-        core_inversion(folder, output_directory, overwrite=True)
+# def generate_L2A_windspeed_product(input_directory, output_directory):
+#     folders = glob.glob(os.path.join(input_directory, "*SAFE"))
+#     logging.info('nb SAFE to treat: %s',len(folders))
+#     for folder in folders:
+#         core_inversion(folder, output_directory, overwrite=True)
