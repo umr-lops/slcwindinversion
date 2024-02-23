@@ -4,7 +4,7 @@ import sys
 import logging
 import time
 import numpy as np
-from slcwindinversion.slcwindinversion import core_inversion
+from slcwindinversion.mainslcwindinversion import core_inversion
 
 
 def get_memory_usage():

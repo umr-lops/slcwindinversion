@@ -36,7 +36,7 @@ def core_inversion(folder, outd, overwrite=False,version=None):
     """
     folder = folder.rstrip('/')
     out_folder = os.path.join(outd, os.path.basename(folder))
-    out_folder = out_folder.replace('XSP', 'WPS')
+    out_folder = out_folder.replace('XSP', 'WSP')
     logging.info(out_folder)
     os.makedirs(out_folder, exist_ok=True)
     if '1SDV' in folder or '1SDH' in folder:
