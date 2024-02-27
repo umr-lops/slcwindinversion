@@ -27,6 +27,16 @@ def get_l2_filepath(l1c_fullpath, version, outputdir)->str:
     else:  # there is already a product ID in the L1B SAFE name
         lastpart = safe_file.split("_")[-1]
         safe_file = safe_file.replace(lastpart, version.upper() + ".SAFE")
+    if '1SDV' in safe_file:
+        pola_str = 'dv'
+    elif '1SDH' in safe_file:
+        pola_str = 'dh'
+    elif '1SSV' in safe_file:
+        pola_str = 'sv'
+    elif '1SSH' in safe_file:
+        pola_str = 'sh'
+    else:
+        raise Exception('safe file polarization is not defined as expected')
 
     # measurement part
     base_measu = os.path.basename(l1c_fullpath)
@@ -37,7 +47,10 @@ def get_l2_filepath(l1c_fullpath, version, outputdir)->str:
         base_measu = base_measu.replace('l1c-','l2-')
     else:
         base_measu = 'l2-'+base_measu
+    base_measu = base_measu.replace(base_measu.split('-')[4], pola_str) # replace -vv- by -dv- or -sv- depending on SAFE information
     base_measu = base_measu.replace('-xsp-','-wsp-')
+    base_measu = base_measu.replace('-slc-', '-wsp-')
+
 
     l2_full_path = os.path.join(pathout, safe_file,base_measu)
     logging.debug("File out: %s ", l2_full_path)
