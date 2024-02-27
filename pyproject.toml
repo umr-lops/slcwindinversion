@@ -1,10 +1,9 @@
 [project]
 name = "slcwindinversion"
 requires-python = ">= 3.9"
-description = "Python library to generate L2A wind speed products from intermediate Sentinel-1 TOPS SLC-derived products."
+description = "Python library to generate Level-2 wind speed products from intermediate Sentinel-1 TOPS SLC-derived products."
 readme.file = "README.md"
 readme.content-type = "text/markdown"
-#license.text = "GPL-3.0"
 license = {text = "MIT"}
 keywords = ["SAR", "windspeed", "reseach","SAR",'Sentinel-1']
 authors = [
@@ -17,6 +16,7 @@ dependencies = [
     "scipy",
     "xsarsea",
     "xarray",
+    "h5netcdf",
     "xarray-datatree",
     "importlib_resources",
     'tqdm'
