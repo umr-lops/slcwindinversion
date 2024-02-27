@@ -23,6 +23,7 @@ def get_vv_vh(folder, subswath_number):
     vhs = glob.glob(os.path.join(folder, "*" + os.path.basename(folder)[0:6].lower().replace("_", "-") + str(
         subswath_number) + "-slc-vh-*.nc"))
     if (len(vvs) != 1) | (len(vhs) != 1):
+        logging.info('cannot find the co and cross pol measurement')
         return []
     else:
         return vvs[0], vhs[0]
@@ -38,6 +39,11 @@ def core_inversion(input_folder, outd,version, overwrite=False):
     """
     input_folder = input_folder.rstrip('/')
     out_folder = outd
+    if '1SDV' in input_folder or '1SDH' in input_folder:
+        pass
+    else:
+        logging.info('the input SAFE is a single pol acquisition, not handled for now.')
+        return 0
 
     subswath_numbers = [1, 2, 3]  # for IW
     for subswath_number in subswath_numbers:
