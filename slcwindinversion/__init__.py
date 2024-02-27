@@ -7,4 +7,5 @@ from importlib.metadata import version
 try:
     __version__ = version("slcwindinversion")
 except Exception:
+    print('impossible to get version of slcwindinversion ')
     __version__ = "999"
