@@ -43,7 +43,7 @@ def main():
                             datefmt='%d/%m/%Y %H:%M:%S', force=True)
     t0 = time.time()
     # generate_L2A_windspeed_product(input_directory=args.inputsafe, output_directory=args.outputdir)
-    core_inversion(folder=args.inputsafe,outd=args.outputdir,overwrite=args.overwrite)
+    core_inversion(input_folder=args.inputsafe,outd=args.outputdir,overwrite=args.overwrite,version=args.version)
     logging.info('peak memory usage: %s', get_memory_usage())
     logging.info('done in %1.3f min', (time.time() - t0) / 60.)
     return 0
